@@ -13,11 +13,6 @@
 
         <div id="bigText" hidden>
             <h1 style="margin: 0;">Announcement Text</h1>
-            <p>Subtext</p>
-        </div>
-
-        <div id="currentQuestion" hidden>
-
         </div>
 
         <div id="currentRanks">
@@ -53,5 +48,29 @@
                 </tbody>
             </table>
         </div>
+
+        <script>
+            function switch_screen(screen) {
+                document.querySelector(`#bigText`).setAttribute("hidden", "");
+                document.querySelector(`#currentRanks`).setAttribute("hidden", "");
+
+                document.querySelector(`#${screen}`).removeAttribute("hidden");    
+            }
+
+            window.addEventListener("message", (obj) => {
+                switch (obj.data["type"]) {
+                    case "text":
+                        switch_screen("bigText");
+
+                        document.querySelector("#bigText > h1").innerHTML = obj.data["data"];
+
+                        break;
+                    case "scores":
+                        switch_screen("currentRanks");
+
+                        break;
+                }
+            });
+        </script>
     </body>
 </html>

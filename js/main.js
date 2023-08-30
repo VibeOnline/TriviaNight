@@ -10,6 +10,15 @@ const ROUND_TEMPLATE = temp_round.cloneNode(true);
 temp_round.parentNode.removeChild(temp_round);
 delete temp_round;
 
+// Window messages
+let popout_win;
+function send_screen(type, data) {
+    popout_win.postMessage({
+        "type": type,
+        "data": data
+    }, "*");
+}
+
 // Custom prompts
 function custom_prompt(message, callback, input_type="text") { // Input prompt
     let prompt = document.querySelector("#prompt");
@@ -72,17 +81,24 @@ function custom_alert(message) { // Alert text
 function custom_list(message, list, callback, action_txt) { // Alert text
     let alert_list = document.querySelector("#list");
 
+    // Show
+    alert_list.removeAttribute("hidden");
+
     // Set contents
     alert_list.querySelector(".modal-title").innerHTML = message;
-    let ls = alert_list.querySelector(".modal-content");
+    let ls = alert_list.querySelector("table tbody");
     ls.innerHTML = "";
 
     if (callback) {
-        for (i in list) {
-            ls.innerHTML += `<tr><td>${list[i]}</td><td id='question-${i}'>${action_txt}</td></tr>`;
+        list.forEach((item, ind) => {
+            ls.innerHTML += `<tr><td>${item}</td><td id="question-${ind}" class="modal_list_action"><button class="btn btn-add">${action_txt}</button></td></tr>`;
 
-            document.querySelector(`#question-${i}`).onclick = () => callback(i);
-        }
+            ls.querySelector(`#question-${ind}`).onclick = () => callback(ind);
+        });
+    } else {
+        list.forEach(item => {
+            ls.innerHTML += `<tr><td>${item}</td></tr>`;
+        });
     }
 }
 
@@ -197,9 +213,9 @@ function add_question(round_name, question_worth) {
 
 // List questions for a round
 function show_questions(round_name) {
-    custom_list(`${round_name} Questions`, roundQuestions[round_name], mess => {
-        console.log(mess);
-    });
+    custom_list(`${round_name} Questions`, roundQuestions[round_name], num => {
+        document.querySelector(`#round-${round_name.replaceAll(" ", "-")} #question-${num}`);
+    }, "Send Question");
 }
 
 // Delete round you didn't mean to make
@@ -247,10 +263,5 @@ function add_round() {
 
 // Display related functions
 function open_tracker() {
-    window.open("popup.html", "Trivia Night Display", "height=500,width=800");
-}
-
-// Show question lists
-function show_questions() {
-    document.querySelector("#question-list").removeAttribute("hidden");
+    popout_win = window.open("popup.html", "Trivia Night Display", "height=500,width=800");
 }

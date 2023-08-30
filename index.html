@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Trivia Night Manager</title>
         <link rel="stylesheet" href="css/main.css">
@@ -16,14 +16,14 @@
 
         <span class="inp inp-start">Questions per round</span><input type="number" id="default-questions" style="width: 100px;" class="inp inp-end" placeholder="Default number of questions">
 
-        <button onclick="custom_prompt('Make Announcement', txt => send_text(txt))" class="btn btn-link" style="float: right;">Send Announcement</button>
+        <button onclick="custom_prompt('Make Announcement', txt => send_screen('text', txt))" class="btn btn-link" style="float: right;">Send Announcement</button>
 
         <div id="roundContainer">
             <div id="roundTemplate">
                 <h2>
-                    <button class="btn btn-danger delete_round">Delete</button>&nbsp;
+                    <button class="btn btn-danger delete_round">- Delete</button>&nbsp;
                     <span class="round_name"></span>
-                    <span style="float: right;"><button class="btn btn-info show-questions">Questions</button></span>
+                    <span style="float: right;"><button class="btn btn-info show_questions">Questions</button></span>
                 </h2>
                 <table class="round-table">
                     <thead>
@@ -39,7 +39,7 @@
                             <td class="team_name"></td>
                             <td class="team_manual_score"><input type="number" class="inp" placeholder="Manual score..."></td>
                             <td class="team_score">0</td>
-                            <td><button class="delete_team btn btn-danger">Delete Team</button></td>
+                            <td><button class="delete_team btn btn-danger">- Delete Team</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -48,10 +48,10 @@
 
         <div id="prompt" class="modal" hidden>
             <div class="modal-menu">
-                <h1>
-                    <span class="modal-title"></span>
+                <h2>
                     <button class="btn btn-danger btn-close" onclick="document.querySelector('#prompt').setAttribute('hidden', '')">Close</button>
-                </h1>
+                    <span class="modal-title"></span>
+                </h2>
                 <hr>
                 <div class="modal-content">
 
@@ -73,16 +73,18 @@
             <div class="modal-menu">
                 <h2 class="modal-title" style="margin: 5px;"></h2>
                 <hr>
-                <button class="btn btn-danger modal-cancel" style="margin: 5px; text-align: center; width: calc(100% - 10px);" onclick="document.querySelector('#confirm').setAttribute('hidden', '')">Close</button>
+                <button class="btn btn-danger modal-cancel" style="margin: 5px; text-align: center; width: calc(100% - 10px);" onclick="document.querySelector('#alert').setAttribute('hidden', '')">Close</button>
             </div>
         </div>
 
-        <div id="list" class="modal" hidden>
+        <div id="list" class="modal modal-list" hidden>
             <div class="modal-menu">
                 <h2 class="modal-title" style="margin: 5px;"></h2>
                 <hr>
-                <table class="modal-content"></table>
-                <button class="btn btn-danger modal-cancel" style="margin: 5px; text-align: center; width: calc(100% - 10px);" onclick="document.querySelector('#confirm').setAttribute('hidden', '')">Close</button>
+                <table>
+                    <tbody></tbody>
+                </table>
+                <button class="btn btn-danger modal-cancel" style="margin: 5px; text-align: center; width: calc(100% - 10px);" onclick="document.querySelector('#list').setAttribute('hidden', '')">Close</button>
             </div>
         </div>
 

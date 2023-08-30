@@ -170,9 +170,10 @@ body {
     border-radius: 0.25rem;
 }
 
-.modal h1 {
+.modal h2 {
     margin: 0;
     padding: 5px;
+    min-height: 30px;
 }
 
 .modal hr {
@@ -194,18 +195,37 @@ body {
     margin: 15px;
 }
 
+.modal-list table {
+    table-layout: auto;
+    width: calc(100% - 10px);
+    background-color: whitesmoke;
+    border-radius: 0.25rem;
+    margin: 5px;
+}
+
+.modal-list table tbody {
+    width: 100%;
+}
+
+.modal_list_action {
+    width: 150px;
+    text-align: right;
+}
+
 /* Display styles */
 #bigText {
     text-align: center;
     width: 80vw;
+    height: 80vh;
     position: fixed;
-    bottom: calc(10vh - 5px);
+    top: calc(10vh - 5px);
     left: calc(10vw - 5px);
-    font-size: 4rem;
-    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 30px;
+    background-color: rgba(240, 240, 240, 0.75);
     border-radius: 10px;
-    color: white;
+    color: black;
     padding: 10px;
+    box-shadow: -5px -5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .leaders {
