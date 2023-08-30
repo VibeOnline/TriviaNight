@@ -1,0 +1,237 @@
+html {
+    min-height: 100%;
+    background: src("img/background.svg");
+}
+
+body {
+    font-family: monospace;
+}
+
+.inp {
+    border: none;
+    padding: 4px;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+}
+
+.inp-start {
+    background-color: black;
+    color: white;
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.inp-end {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.inp-end:focus {
+    outline: 2px solid #8989ff;
+}
+
+.round-table {
+    background-color: whitesmoke;
+    box-shadow: -5px -5px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    width: calc(100% - 20px);
+    margin: 10px;
+    border-spacing: 0 5px;
+    padding: 0 5px;
+}
+
+.round-table tr, .round-table th {
+    height: 30px;
+    padding: 2px;
+}
+
+.round-table tr th, .round-table tr td {
+    text-align: left;
+    font-size: 15px;
+    font-family: monospace;
+}
+
+.round-table thead tr {
+    background-color: #5555ff;
+    color: white;
+}
+
+.round-table tr th:last-child, .round-table tr td:last-child {
+    border-radius: 0 5px 5px 0;
+    width: 150px;
+    text-align: center;
+}
+
+.round-table tr th:first-child, .round-table tr td:first-child {
+    border-radius: 5px 0 0 5px;
+}
+.round-table tr td:last-child .btn, .round-table tr th:last-child .btn {
+    width: calc(100% - 5px);
+}
+
+.round-table tbody tr:nth-child(2n) {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.round-table thead tr input[type=number] {
+    border: none;
+    border-radius: 5px;
+    width: 30px;
+    margin-right: 2px;
+    text-align: center;
+}
+
+/* Manager styles */
+.round_name {
+    margin-bottom: 0;
+}
+
+.team_name {
+    width: 200px;
+}
+
+.team_score {
+    width: 200px;
+}
+
+.btn {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    font-family: monospace;
+}
+
+.btn-text {
+    background: none;
+    color: lightblue;
+}
+
+.btn-text:hover {
+    color: black !important;
+}
+
+.btn-add {
+    background-color: #99ff99;
+}
+
+.btn-add:hover {
+    background-color: #88ee88;
+}
+
+.btn-action {
+    background-color: #9999ff;
+}
+
+.btn-action:hover {
+    background-color: #8888ee;
+}
+
+.btn-danger {
+    background-color: #ff9999;
+}
+
+.btn-danger:hover {
+    background-color: #ee8888;
+}
+
+.btn-link {
+    background-color: black;
+    color: white;
+}
+
+.btn-link:hover {
+    background-color: white;
+    color: black
+}
+
+#background {
+    z-index: -1;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-menu {
+    width: 500px;
+    margin: auto;
+    margin-top: 50px;
+    border: 2px solid #dddddd;
+    background-color: white;
+    border-radius: 0.25rem;
+}
+
+.modal h1 {
+    margin: 0;
+    padding: 5px;
+}
+
+.modal hr {
+    margin: 0 10px;
+    border: 0.5px solid #dddddd;
+}
+
+.modal .btn-close {
+    float: right;
+    font-size: 15px;
+    color: white;
+    background-color: red;
+    border: 2px solid #ee5555;
+}
+
+.modal .modal-content {
+    border-radius: 0.25rem;
+    background-color: whitesmoke;
+    margin: 15px;
+}
+
+/* Display styles */
+#bigText {
+    text-align: center;
+    width: 80vw;
+    position: fixed;
+    bottom: calc(10vh - 5px);
+    left: calc(10vw - 5px);
+    font-size: 4rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+}
+
+.leaders {
+    width: 95%;
+    padding-left: 5%;
+}
+
+#currentRanks {
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    width: calc(100vw - 200px);
+    margin: 100px;
+}
+
+.leaders {
+    font-size: 40px;
+}
+
+.leaders thead tr {
+    background-color: whitesmoke;
+    border-radius: 0.25rem;
+}
+
+.leaders tbody tr {
+    background-color: whitesmoke;
+    border-radius: 0.25rem;
+}
