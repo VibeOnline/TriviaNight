@@ -90,10 +90,16 @@ function custom_list(message, list, callback, action_txt) { // Alert text
     ls.innerHTML = "";
 
     if (callback) {
+        let values = [];
+
         list.forEach((item, ind) => {
             ls.innerHTML += `<tr><td>${item}</td><td id="question-${ind}" class="modal_list_action"><button class="btn btn-add">${action_txt}</button></td></tr>`;
+            
+            values[ind] = item;
+        });
 
-            ls.querySelector(`#question-${ind}`).onclick = () => callback(item);
+        alert_list.querySelectorAll("table tbody tr button").forEach((btn, ind) => {
+            btn.addEventListener("click", () => callback(values[ind]));
         });
     } else {
         list.forEach(item => {
@@ -103,6 +109,7 @@ function custom_list(message, list, callback, action_txt) { // Alert text
 }
 
 // Calculate teams score for a round when changed
+let savedQuestions = JSON.parse(sessionStorage.getItem("saves") || "{ \"list\": [] }")["list"];
 function calculate_score(round_name, team_name) {
     team_name = team_name.replaceAll(" ", "-");
 
@@ -116,6 +123,12 @@ function calculate_score(round_name, team_name) {
         if (team_answers[i].checked) {
             team_score += Number(document.querySelector(`#round-${round_name} thead .${team_answers[i].classList[0]}`).value);
         }
+
+        savedQuestions.push([
+            `#round-${round_name} #team-${team_name} .${team_answers[i].classList[0]}`,
+            team_answers[i].value,
+            team_answers[i].checked
+        ]);
     }
     
     // Display score
@@ -137,7 +150,7 @@ function add_team(round_name, team_name) {
 
             // Add functions
             this_team.querySelector(".delete_team").addEventListener("click", () => {
-                custom_confirm(`Are you sure you want to delete team "${team_name}"? This CANNOT be undone`, () => this_team.remove());
+                custom_confirm(`Are you sure you want to delete team "${team_name.replaceAll("-", " ").replaceAll("<", "&lt;")}"? This CANNOT be undone`, () => this_team.remove());
             });
 
             // Add existing questions
@@ -157,7 +170,7 @@ function add_team(round_name, team_name) {
             // Insert to round
             document.querySelector(`#round-${round_name} tbody`).appendChild(this_team);
         } else {
-            custom_alert(`Team "${team_name}" already exists in "${round_name}"`);
+            custom_alert(`Team "${team_name}" already exists in "${round_name.replaceAll("-", " ").replaceAll("<", "&lt;")}"`);
         }
     };
 
@@ -253,7 +266,7 @@ function send_scores() {
 
 // Delete round you didn't mean to make
 function delete_round(round_name) {
-    custom_confirm(`Are you sure you want to delete round "${round_name}"? This CANNOT be undone`, () => document.querySelector(`#round-${round_name}`).remove());
+    custom_confirm(`Are you sure you want to delete round "${round_name.replaceAll("-", " ").replaceAll("<", "&lt;")}"? This CANNOT be undone`, () => document.querySelector(`#round-${round_name}`).remove());
 }
 
 // Add a new round
@@ -277,6 +290,7 @@ function add_round() {
     
             // Setup questions
             roundQuestions[round_name] = [];
+            savedQuestions[round_name] = {};
 
             // Insert to page
             document.querySelector("#roundContainer").appendChild(this_round);
@@ -295,7 +309,7 @@ function add_round() {
                 }
             }
         } else {
-            custom_alert(`Round "${round_name}" already exists`);
+            custom_alert(`Round "${round_name.replaceAll("-", " ").replaceAll("<", "&lt;")}" already exists`);
         }
     });
 }
@@ -304,3 +318,46 @@ function add_round() {
 function open_tracker() {
     popout_win = window.open("popup.html", "Trivia Night Display", "height=500,width=800");
 }
+
+// Load saved session data
+const ROUND_CONTAINER = document.querySelector("#roundContainer");
+ROUND_CONTAINER.innerHTML = sessionStorage.getItem("rounds") || "";
+OLD_QUESTIONS = JSON.parse(sessionStorage.getItem("questions") || "{ \"data\": {} }");
+
+for (item in OLD_QUESTIONS["data"]) {
+    roundQuestions[item] = OLD_QUESTIONS["data"][item];
+}
+
+document.querySelectorAll("#roundContainer > div").forEach(round => {
+    let round_name = round.querySelector(".round_name").innerHTML.replaceAll(" ", "-").replaceAll("&lt;", "<");
+
+    round.querySelector(".add_team").addEventListener("click", () => add_team(round_name));
+    round.querySelector(".add_question").addEventListener("click", () => add_question(round_name));
+    round.querySelector(".delete_round").addEventListener("click", () => delete_round(round_name));
+    round.querySelector(".show_questions").addEventListener("click", () => show_questions(round_name));
+
+    round.querySelectorAll(".round-table tbody tr").forEach(team => {
+        let team_name = team.querySelector(".team_name").innerHTML.replaceAll(" ", "-").replaceAll("&lt;", "<");
+
+        team.querySelector(".delete_team").addEventListener("click", () => {
+            custom_confirm(`Are you sure you want to delete team "${team_name.replaceAll("-", " ").replaceAll("<", "&lt;")}"? This CANNOT be undone`, () => team.remove());
+        });
+
+        team.querySelectorAll("input").forEach(inp => {
+            inp.addEventListener("change", () => calculate_score(round_name, team_name));
+        });
+    });
+});
+
+savedQuestions.forEach(save => {
+    document.querySelector(save[0]).value = save[1];
+    document.querySelector(save[0]).checked = save[2];
+});
+
+// Save changes to system
+const CHANGE_LISTENER = new MutationObserver(() => {
+    sessionStorage.setItem("rounds", ROUND_CONTAINER.innerHTML);
+    sessionStorage.setItem("questions", JSON.stringify({ "data": roundQuestions }));
+    sessionStorage.setItem("saves", JSON.stringify({ "list": savedQuestions }));
+});
+CHANGE_LISTENER.observe(ROUND_CONTAINER, { childList: true, subtree: true });
