@@ -239,19 +239,25 @@ body {
     top: 0;
     overflow: hidden;
     width: calc(100vw - 200px);
+    height: calc(100vh - 200px);
     margin: 100px;
 }
 
 .leaders {
-    font-size: 40px;
+    font-size: 25px;
 }
 
 .leaders thead tr {
-    background-color: whitesmoke;
+    background-color: #8888ff;
+    color: white;
     border-radius: 0.25rem;
 }
 
 .leaders tbody tr {
     background-color: whitesmoke;
+    border-radius: 0.25rem;
+}
+
+.leaders tbody td, .leaders thead th {
     border-radius: 0.25rem;
 }

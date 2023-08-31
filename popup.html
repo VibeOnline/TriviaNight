@@ -16,35 +16,16 @@
         </div>
 
         <div id="currentRanks">
-            <table style="width: 100%; height: 200px;" class="leaders">
+            <table class="leaders">
                 <thead>
                     <tr>
-                        <td>Place</td>
-                        <td>Team Name</td>
-                        <td>Total Score</td>
+                        <th>Place</th>
+                        <th>Team Name</th>
+                        <th>Total Score</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>#1</td>
-                        <td>Team 1</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>#2</td>
-                        <td>Team 2</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>#3</td>
-                        <td>Team 3</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>#4</td>
-                        <td>Team 4</td>
-                        <td>0</td>
-                    </tr>
+                <tbody id="scored-teams">
+                    
                 </tbody>
             </table>
         </div>
@@ -68,6 +49,18 @@
                     case "scores":
                         switch_screen("currentRanks");
 
+                        let teams = document.querySelector("#scored-teams");
+                        
+                        teams.innerHTML = "";
+                        for (ind in obj.data["data"]) {
+                            teams.innerHTML +=
+`<tr>
+    <td>#${Number(ind) + 1}</td>
+    <td>${obj.data["data"][ind]["name"]}</td>
+    <td>${obj.data["data"][ind]["score"]}</td>
+</tr>`;
+                        }
+                        
                         break;
                 }
             });

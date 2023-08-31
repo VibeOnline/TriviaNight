@@ -93,7 +93,7 @@ function custom_list(message, list, callback, action_txt) { // Alert text
         list.forEach((item, ind) => {
             ls.innerHTML += `<tr><td>${item}</td><td id="question-${ind}" class="modal_list_action"><button class="btn btn-add">${action_txt}</button></td></tr>`;
 
-            ls.querySelector(`#question-${ind}`).onclick = () => callback(ind);
+            ls.querySelector(`#question-${ind}`).onclick = () => callback(item);
         });
     } else {
         list.forEach(item => {
@@ -213,9 +213,36 @@ function add_question(round_name, question_worth) {
 
 // List questions for a round
 function show_questions(round_name) {
-    custom_list(`${round_name} Questions`, roundQuestions[round_name], num => {
-        document.querySelector(`#round-${round_name.replaceAll(" ", "-")} #question-${num}`);
-    }, "Send Question");
+    custom_list(`${round_name} Questions`, roundQuestions[round_name], text => {
+        send_screen("text", text);
+    }, "Send Question", `${round_name}-`);
+}
+
+// List total scores
+function send_scores() {
+    let scores = {};
+
+    // Build team to score list
+    document.querySelectorAll("#roundContainer .round-table tbody tr").forEach(team => {
+        let team_name = team.querySelector(".team_name").innerHTML;
+
+        if (!scores[team_name]) scores[team_name] = 0;
+        
+        scores[team_name] += Number(team.querySelector(".team_score").innerHTML);
+    });
+
+    // Build them into list
+    let list = [];
+    for (team in scores) {
+        list.push({ "name": team, "score": scores[team] });
+    }
+
+    list.sort((a, b) => {
+        return a["score"] - b["score"];
+    });
+
+    // Send list to big screen
+    send_screen("scores", list.reverse());
 }
 
 // Delete round you didn't mean to make

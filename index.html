@@ -16,7 +16,10 @@
 
         <span class="inp inp-start">Questions per round</span><input type="number" id="default-questions" style="width: 100px;" class="inp inp-end" placeholder="Default number of questions">
 
-        <button onclick="custom_prompt('Make Announcement', txt => send_screen('text', txt))" class="btn btn-link" style="float: right;">Send Announcement</button>
+        <span style="float: right">
+            <button onclick="send_scores()" class="btn btn-link">Send Score List</button>
+            <button onclick="custom_prompt('Make Announcement', txt => send_screen('text', txt))" class="btn btn-link">Send Announcement</button>
+        </span>
 
         <div id="roundContainer">
             <div id="roundTemplate">
