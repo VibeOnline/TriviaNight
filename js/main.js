@@ -123,8 +123,8 @@ function calculate_score(round_name, team_name) {
 }
 
 // Add team to round
-function add_team(round_name) {
-    custom_prompt("Enter team name", team_name => {
+function add_team(round_name, team_name) {
+    let add = team_name => {
         team_name = team_name.replaceAll(" ", "-")
 
         // Check if team exists in round
@@ -159,7 +159,13 @@ function add_team(round_name) {
         } else {
             custom_alert(`Team "${team_name}" already exists in "${round_name}"`);
         }
-    });
+    };
+
+    if (team_name) {
+        add(team_name);
+    } else {
+        custom_prompt("Enter team name", add);
+    }
 }
 
 // Keep track of questions per round
@@ -271,9 +277,15 @@ function add_round() {
     
             // Setup questions
             roundQuestions[round_name] = [];
-    
+
             // Insert to page
             document.querySelector("#roundContainer").appendChild(this_round);
+
+            // Get teams
+            let teams = document.querySelectorAll("#roundContainer .round-table:last-child tbody .team_name");
+            for (j = 0; j < teams.length; j++) {
+                add_team(round_name, teams[j].innerHTML);
+            }
     
             // Add default questions
             let question_count = Number(document.querySelector("#default-questions").value);
